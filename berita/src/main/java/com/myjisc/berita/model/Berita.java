@@ -36,4 +36,5 @@ public class Berita {
 
     private List<String> kategori;
 
+    private boolean isdeleted=false;
 }
