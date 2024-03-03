@@ -29,8 +29,10 @@ public class Artikel {
     @Column(name = "isi_artikel", nullable = false, length = 1000)
     private String isiArtikel;
 
-    @OneToMany(mappedBy = "berita", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ImageModel> imageModels;
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
+    @Column(name = "image")
+    private byte[] imageArtikel;
 
     @Column(name = "kategori")
    private List<String> kategori;
