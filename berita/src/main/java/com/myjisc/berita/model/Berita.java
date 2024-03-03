@@ -29,6 +29,7 @@ public class Berita {
     @Column(name = "isi_berita", nullable = false, length = 1000)
     private String isiBerita;
 
+    @Column(name = "kategori")
     private List<String> kategori;
 
     @OneToMany(mappedBy = "berita", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

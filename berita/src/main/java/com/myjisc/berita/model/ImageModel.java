@@ -16,11 +16,12 @@ public class ImageModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "image_name")
     private String imageName;
 
     @Lob
     @Basic(fetch = FetchType.EAGER)
-    @Column(name = "image")
+    @Column(name = "image_data")
     private byte[] imageBerita;
 
     @ManyToOne(fetch = FetchType.EAGER)
