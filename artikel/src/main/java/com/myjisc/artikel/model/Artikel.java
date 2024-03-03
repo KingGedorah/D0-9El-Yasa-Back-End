@@ -29,11 +29,10 @@ public class Artikel {
     @Column(name = "isi_artikel", nullable = false, length = 1000)
     private String isiArtikel;
 
-    @Lob
-    @Basic(fetch = FetchType.EAGER)
-    @Column(name = "image")
-    private byte[] imageArtikel;
+    @OneToMany(mappedBy = "berita", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ImageModel> imageModels;
 
+    @Column(name = "kategori")
    private List<String> kategori;
 
    @Column(name = "is_deleted")
