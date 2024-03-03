@@ -32,8 +32,10 @@ public class Berita {
     @Column(name = "kategori")
     private List<String> kategori;
 
-    @OneToMany(mappedBy = "berita", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ImageModel> imageModels;
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
+    @Column(name = "image")
+    private byte[] imageArtikel;
 
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
