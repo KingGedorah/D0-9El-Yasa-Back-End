@@ -33,4 +33,7 @@ public class Berita {
 
     @OneToMany(mappedBy = "artikel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ImageModel> imageModels;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
 }
