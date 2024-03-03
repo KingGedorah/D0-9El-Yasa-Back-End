@@ -19,7 +19,7 @@ public class Artikel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long idArtikel;
 
     @NotNull
     @Column(name = "judul_artikel", nullable = false)
@@ -35,5 +35,8 @@ public class Artikel {
     private byte[] imageArtikel;
 
    private List<String> kategori;
+
+   @Column(name = "is_deleted")
+   private boolean isDeleted = false;
 
 }
