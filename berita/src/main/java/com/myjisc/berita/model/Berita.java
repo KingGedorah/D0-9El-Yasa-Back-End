@@ -19,7 +19,7 @@ public class Berita {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long idBerita;
 
     @NotNull
     @Column(name = "judul_artikel", nullable = false)
@@ -29,11 +29,8 @@ public class Berita {
     @Column(name = "isi_artikel", nullable = false, length = 1000)
     private String isiBerita;
 
-    @Lob
-    @Basic(fetch = FetchType.EAGER)
-    @Column(name = "image")
-    private byte[] imageBerita;
-
     private List<String> kategori;
 
+    @OneToMany(mappedBy = "artikel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ImageModel> imageModels;
 }
