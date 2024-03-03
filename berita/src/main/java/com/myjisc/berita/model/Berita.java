@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "artikel")
+@Table(name = "berita")
 public class Berita {
 
     @Id
@@ -22,16 +22,16 @@ public class Berita {
     private long idBerita;
 
     @NotNull
-    @Column(name = "judul_artikel", nullable = false)
+    @Column(name = "judul_berita", nullable = false)
     private String judulBerita;
 
     @NotNull
-    @Column(name = "isi_artikel", nullable = false, length = 1000)
+    @Column(name = "isi_berita", nullable = false, length = 1000)
     private String isiBerita;
 
     private List<String> kategori;
 
-    @OneToMany(mappedBy = "artikel", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "berita", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ImageModel> imageModels;
 
     @Column(name = "is_deleted")
