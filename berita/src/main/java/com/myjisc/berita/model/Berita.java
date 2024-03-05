@@ -29,14 +29,19 @@ public class Berita {
     @Column(name = "isi_berita", nullable = false, length = 1000)
     private String isiBerita;
 
-    @Column(name = "kategori")
-    private List<String> kategori;
-
     @Lob
     @Basic(fetch = FetchType.EAGER)
     @Column(name = "image")
-    private byte[] imageArtikel;
+    private byte[] imageBerita;
 
-    @Column(name = "is_deleted")
-    private boolean isDeleted = false;
+    @NotNull
+    @Column(name = "kategori", nullable = false)
+    private List<String> kategori;
+
+    @NotNull
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted=false;
+
+
 }
+
