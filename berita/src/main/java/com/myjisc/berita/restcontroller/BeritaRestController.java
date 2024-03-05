@@ -1,5 +1,6 @@
 package com.myjisc.berita.restcontroller;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +31,21 @@ public class BeritaRestController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data");
         }
 
+        byte[] image = beritaRequestDTO.getImageBerita();
+        // beritaRestService.processImage(image);
+
         Berita berita = beritaMapper.createRestBeritaDTOToBerita(beritaRequestDTO);
         beritaRestService.createRestBerita(berita);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(berita);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of("status", 200, "success", "message", "data", berita));
     }
+
+    @GetMapping("/view-all")
+    public ResponseEntity viewAllBerita() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of("status", 200, "success", "message", "data", beritaRestService.retrieveRestAllBerita()));
+    }
+
+    
 
 }
