@@ -29,7 +29,7 @@ public class ArtikelRestController {
 
     @GetMapping(value = "/view-all")
     public ResponseEntity restGetAllArtikel() {
-        List<Artikel> listArtikel = artikelRestService.retreiveAllArtikel();
+        List<Artikel> listArtikel = artikelRestService.retreiveAvailableArtikel();
         try {
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("status", "success");
@@ -84,6 +84,25 @@ public class ArtikelRestController {
                 responseBody.put("message", "Can't process image");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
             }
+        }
+    }
+
+    @DeleteMapping(value = "delete/{id}")
+    public ResponseEntity deleteArtikel(@PathVariable("id") String id) {
+        try {
+            var artikel = artikelRestService.getArtikelByID(id);
+            artikelRestService.deleteArtikel(artikel);
+
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", "success");
+
+            responseBody.put("data", "null");
+
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        } catch (Exception e) {
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Unable communicate with database");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
     }
 

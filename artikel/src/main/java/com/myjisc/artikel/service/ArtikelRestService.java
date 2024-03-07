@@ -31,6 +31,10 @@ public class ArtikelRestService {
         return artikelDb.findAll();
     }
 
+    public Artikel getArtikelByID(String idArtikel)  {
+        return artikelDb.findById(Long.valueOf(idArtikel)).get();
+    }
+
     public Artikel createRestArtikel (CreateArtikelRequestDTO artikelDTO, MultipartFile file) throws IOException {
         Artikel artikel = new Artikel();
         artikel.setJudulArtikel(artikelDTO.getJudulArtikel());
@@ -56,5 +60,10 @@ public class ArtikelRestService {
             throw new NoSuchObjectException("Article not found");
         }
 
+    }
+
+    public void deleteArtikel(Artikel artikel) {
+        artikel.setDeleted(true);
+        artikelDb.save(artikel);
     }
 }
