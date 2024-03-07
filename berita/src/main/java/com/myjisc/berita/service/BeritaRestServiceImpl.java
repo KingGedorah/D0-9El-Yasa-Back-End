@@ -3,27 +3,52 @@ package com.myjisc.berita.service;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
-import com.myjisc.berita.dto.request.UpdateBeritaRequestDTO;
+import java.io.IOException;
+import java.rmi.NoSuchObjectException;
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import com.myjisc.berita.model.Berita;
 import com.myjisc.berita.repository.BeritaDb;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional
 public class BeritaRestServiceImpl implements BeritaRestService{
+
     @Autowired
     private BeritaDb beritaDb;
 
+    @Autowired
+    private ImageUtilService imageUtilService;
+
     @Override
-    public void createRestBerita(Berita berita) {
+    public Berita createRestBerita(Berita berita) {
         beritaDb.save(berita);
+        return berita;
+    }
+
+    @Override
+    public Berita createRestBerita(Berita berita, MultipartFile file) throws IOException {
+        berita.setImageBerita(setRestBeritaImage(berita, file));
+        beritaDb.save(berita);
+        return berita;
+    }
+
+    @Override
+    public byte[] setRestBeritaImage(Berita berita, MultipartFile file) throws IOException{
+        byte[] imageBerita = imageUtilService.compressImage(file.getBytes());
+        return imageBerita;
     }
 
     @Override
     public List<Berita> retrieveRestAllBerita() {
         return beritaDb.findAll();
     }
+
+    @Override
+    public List<Berita> retrieveRestAvailableBerita() { return beritaDb.findByIsDeletedFalse(); }
 
     @Override
     public Berita getRestBeritaById(long id) {
@@ -42,17 +67,46 @@ public class BeritaRestServiceImpl implements BeritaRestService{
     }
 
     @Override
-    public Berita updateRestBerita(UpdateBeritaRequestDTO beritaFromDTO) {
-        Berita berita = getRestBeritaById(beritaFromDTO.getIdBerita());
+    public Berita updateRestBerita(Berita beritaFromDTO) throws NoSuchObjectException {
+        var berita = getRestBeritaById(beritaFromDTO.getIdBerita());
         if (berita == null) {
-            return null;
-        }else {
+            throw new NoSuchObjectException("Berita not found");
+        } else {
             berita.setJudulBerita(beritaFromDTO.getJudulBerita());
             berita.setIsiBerita(beritaFromDTO.getIsiBerita());
             berita.setKategori(beritaFromDTO.getKategori());
-            berita.setImageBerita(beritaFromDTO.getImageBerita());
             beritaDb.save(berita);
+
+            return berita;
         }
-        return berita;
+    }
+
+    @Override
+    public Berita updateRestBerita(Berita beritaFromDTO, MultipartFile file) throws IOException {
+        var berita = getRestBeritaById(beritaFromDTO.getIdBerita());
+        if (berita == null) {
+            throw new NoSuchObjectException("Berita not found");
+        } else {
+
+            berita.setJudulBerita(beritaFromDTO.getJudulBerita());
+            berita.setIsiBerita(beritaFromDTO.getIsiBerita());
+            berita.setImageBerita(setRestBeritaImage(beritaFromDTO, file));
+            berita.setKategori(beritaFromDTO.getKategori());
+            beritaDb.save(berita);
+
+            return berita;
+        }
+    }
+
+    @Override
+    public byte[] getImageBerita (Long id) throws NoSuchObjectException {
+        var berita = beritaDb.findById(id).get();
+
+        if (berita != null ) {
+            byte[] image = imageUtilService.decompressImage(berita.getImageBerita());
+            return image;
+        } else {
+            throw new NoSuchObjectException("Berita Not Found");
+        }
     }
 }
