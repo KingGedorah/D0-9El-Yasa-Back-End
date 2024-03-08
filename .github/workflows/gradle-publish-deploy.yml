@@ -31,7 +31,7 @@ jobs:
       - name: Deploy to Heroku
         run: |
           cd artikel
-          if .\gradlew.bat build -x test; then
+          if ./gradlew build -x test; then
             echo "Build successful, deploying to Heroku..."
             echo "machine api.heroku.com" >> ~/.netrc
             echo "  login $HEROKU_EMAIL" >> ~/.netrc
