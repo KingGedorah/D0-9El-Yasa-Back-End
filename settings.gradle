@@ -1,1 +1,7 @@
-include ':artikel'
+rootProject.name = 'D09-El-Yasa-Back-End'
+
+include 'artikel'
+include 'berita'
+include 'inventaris'
+include 'kelas'
+include 'user'
