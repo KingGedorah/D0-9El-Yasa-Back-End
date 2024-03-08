@@ -34,6 +34,10 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+task cleanJar(type: Delete) {
+    delete 'build/libs/*.jar'
+}
+
 task stage(dependsOn: ['bootJar'])
 
 jar {
@@ -43,4 +47,6 @@ jar {
     manifest {
         attributes 'Main-Class': 'com.myjisc.artikel.ArtikelApplication'
     }
+    duplicatesStrategy = 'WARN' // or 'INCLUDE', 'EXCLUDE'
+    dependsOn cleanJar
 }
