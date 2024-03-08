@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Gradle
-        run: .\gradlew.bat build -x test
+        run: ./gradlew build
 
       - name: Deploy to Heroku
         run: |
