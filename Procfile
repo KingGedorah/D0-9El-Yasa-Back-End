@@ -1,1 +1,1 @@
-web: cd artikel && ./gradlew build && java -jar artikel/build/libs/*.jar
+web: sh -c "cd artikel && chmod +x gradlew && ./gradlew build && java -jar build/libs/*.jar"
