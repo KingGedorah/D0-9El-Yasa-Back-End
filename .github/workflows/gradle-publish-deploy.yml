@@ -1,0 +1,37 @@
+name: CI/CD with Gradle and Heroku
+
+on:
+  push:
+    branches:
+      - artikel
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Deploy to Heroku
+        run: |
+          cd artikel
+          if ./gradlew build; then
+            echo "Build successful, deploying to Heroku..."
+            echo "machine api.heroku.com" >> ~/.netrc
+            echo "  login $HEROKU_EMAIL" >> ~/.netrc
+            echo "  password $HEROKU_API_KEY" >> ~/.netrc
+            heroku deploy:jar build/libs/*.jar --app <your-heroku-app-name>
+          else
+            echo "Build failed for artikel"
+            exit 1
+          fi
