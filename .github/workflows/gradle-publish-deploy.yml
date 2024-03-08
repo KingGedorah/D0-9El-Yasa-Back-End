@@ -20,11 +20,13 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: |
+          cd D09-El-Yasa-Back-End/artikel
+          ./gradlew build
 
       - name: Deploy to Heroku
         run: |
-          cd artikel
+          cd D09-El-Yasa-Back-End/artikel
           if .\gradlew.bat build -x test; then
             echo "Build successful, deploying to Heroku..."
             echo "machine api.heroku.com" >> ~/.netrc
