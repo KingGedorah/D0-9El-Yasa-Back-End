@@ -32,6 +32,13 @@ public class ArtikelRestController {
     @GetMapping(value = "/view-all")
     public ResponseEntity restGetAllArtikel() {
         List<Artikel> listArtikel = artikelRestService.retreiveAvailableArtikel();
+
+        if (listArtikel.isEmpty()) {
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Data not found");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+        }
+
         try {
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("status", "success");
@@ -53,6 +60,13 @@ public class ArtikelRestController {
     public ResponseEntity getArtikelImage(@PathVariable("id") String id) {
         try {
             byte[] image = artikelRestService.getImage(id);
+
+            if (image == null) {
+                Map<String, Object> responseBody = new HashMap<>();
+                responseBody.put("message", "Data not found");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+            }
+
             return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.IMAGE_PNG).body(image);
         } catch (Exception e) {
             Map<String, Object> responseBody = new HashMap<>();
@@ -122,9 +136,15 @@ public class ArtikelRestController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity viewArtikel(@PathVariable("idArtikel") String idArtikel) {
+    public ResponseEntity viewArtikel(@PathVariable("id") String idArtikel) {
         try {
             var artikel = artikelRestService.getArtikelByID(idArtikel);
+
+            if (artikel == null) {
+                Map<String, Object> responseBody = new HashMap<>();
+                responseBody.put("message", "Data not found");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+            }
 
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("status", "success");
