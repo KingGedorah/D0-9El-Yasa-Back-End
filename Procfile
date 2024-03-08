@@ -1,1 +1,1 @@
-web: java -jar /artikel/build/libs/artikel-0.0.1-SNAPSHOT.jar
+web: java -jar artikel/build/libs/artikel-0.0.1-SNAPSHOT.jar
