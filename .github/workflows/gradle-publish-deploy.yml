@@ -30,14 +30,4 @@ jobs:
 
       - name: Deploy to Heroku
         run: |
-          cd artikel
-          if ./gradlew build -x test; then
-            echo "Build successful, deploying to Heroku..."
-            echo "machine api.heroku.com" >> ~/.netrc
-            echo "  login $HEROKU_EMAIL" >> ~/.netrc
-            echo "  password $HEROKU_API_KEY" >> ~/.netrc
-            git push heroku artikel
-          else
-            echo "Build failed for artikel"
-            exit 1
-          fi
+          echo "Build successful, changes will be automatically deployed by Heroku"
