@@ -35,17 +35,14 @@ public class ArtikelRestService {
         return artikelDb.findById(Long.valueOf(idArtikel)).get();
     }
 
-    public Artikel createRestArtikel (CreateArtikelRequestDTO artikelDTO, MultipartFile file) throws IOException {
-        Artikel artikel = new Artikel();
-        artikel.setJudulArtikel(artikelDTO.getJudulArtikel());
-        artikel.setIsiArtikel(artikelDTO.getIsiArtikel());
-        artikel.setKategori(artikelDTO.getKategori());
-
-        byte[] imageArtikel = imageUtil.compressImage(file.getBytes());
-        artikel.setImageArtikel(imageArtikel);
-
+    public Artikel createRestArtikel (Artikel artikel) {
         artikelDb.save(artikel);
+        return  artikel;
+    }
 
+    public Artikel createRestArtikel (Artikel artikel, MultipartFile file) throws IOException {
+        artikel.setImageArtikel(imageUtil.compressImage(file.getBytes()));
+        artikelDb.save(artikel);
         return  artikel;
     }
 

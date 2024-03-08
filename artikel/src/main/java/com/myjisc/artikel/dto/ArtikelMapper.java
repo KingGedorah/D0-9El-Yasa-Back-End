@@ -1,8 +1,7 @@
-package com.myjisc.artikel.dto.response;
+package com.myjisc.artikel.dto;
 
 import com.myjisc.artikel.dto.request.CreateArtikelRequestDTO;
 import org.mapstruct.Mapper;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.myjisc.artikel.model.Artikel;
 
