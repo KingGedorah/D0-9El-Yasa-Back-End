@@ -19,6 +19,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Grant execute permission to gradlew script
+        run: |
+          chmod +x artikel/gradlew
+
       - name: Build with Gradle
         run: |
           cd artikel
