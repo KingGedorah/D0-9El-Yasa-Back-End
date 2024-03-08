@@ -61,7 +61,7 @@ public class ArtikelRestController {
 
     @PostMapping(value = "/create")
     public ResponseEntity restCreateArtikel(@Valid @RequestBody @ModelAttribute CreateArtikelRequestDTO createArtikelDTO,
-                                            @RequestPart("image")MultipartFile file, BindingResult bindingResult) throws IOException {
+                                            @RequestPart(value = "image", required = false)MultipartFile file, BindingResult bindingResult) throws IOException {
         if (bindingResult.hasFieldErrors()) {
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("status", "fail");
