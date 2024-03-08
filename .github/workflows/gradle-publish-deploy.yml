@@ -36,7 +36,7 @@ jobs:
             echo "machine api.heroku.com" >> ~/.netrc
             echo "  login $HEROKU_EMAIL" >> ~/.netrc
             echo "  password $HEROKU_API_KEY" >> ~/.netrc
-            heroku deploy:jar build/libs/*.jar --app <your-heroku-app-name>
+            heroku deploy:jar build/libs/*.jar --app myjisc-artikel
           else
             echo "Build failed for artikel"
             exit 1
