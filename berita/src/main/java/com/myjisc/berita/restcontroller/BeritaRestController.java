@@ -31,8 +31,9 @@ public class BeritaRestController {
     BeritaMapper beritaMapper;
 
     @PostMapping("/create")
-    public ResponseEntity createBerita(@Valid @RequestBody @ModelAttribute CreateBeritaRequestDTO beritaRequestDTO, @RequestPart(value = "image", required = false)
-                                        MultipartFile file, BindingResult bindingResult) throws IOException {
+    public ResponseEntity createBerita(@Valid @RequestBody @ModelAttribute CreateBeritaRequestDTO beritaRequestDTO,
+            @RequestPart(value = "image", required = false) MultipartFile file, BindingResult bindingResult)
+            throws IOException {
         if (bindingResult.hasErrors()) {
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("status", "fail");
@@ -64,7 +65,6 @@ public class BeritaRestController {
         }
     }
 
-
     @GetMapping("/view-all")
     public ResponseEntity viewAllBerita() {
         try {
@@ -95,7 +95,6 @@ public class BeritaRestController {
 
             responseBody.put("data", berita);
 
-
             return ResponseEntity.status(HttpStatus.OK).body(responseBody);
         } catch (Exception e) {
             Map<String, Object> responseBody = new HashMap<>();
@@ -105,8 +104,10 @@ public class BeritaRestController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity updateBerita(@PathVariable("id") Long id, @Valid @RequestBody @ModelAttribute UpdateBeritaRequestDTO beritaRequestDTO,
-                                       @RequestPart(value = "image", required = false)MultipartFile file ,BindingResult bindingResult) throws IOException {
+    public ResponseEntity updateBerita(@PathVariable("id") Long id,
+            @Valid @RequestBody @ModelAttribute UpdateBeritaRequestDTO beritaRequestDTO,
+            @RequestPart(value = "image", required = false) MultipartFile file, BindingResult bindingResult)
+            throws IOException {
         if (bindingResult.hasErrors()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data");
         }
@@ -147,4 +148,21 @@ public class BeritaRestController {
         }
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteBerita(@PathVariable("id") Long id) {
+        try {
+            var berita = beritaRestService.getRestBeritaById(id);
+            beritaRestService.deleteRestBerita(berita);
+
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("status", "success");
+            responseBody.put("data", "Berita has been deleted");
+
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        } catch (Exception e) {
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Unable communicate with database");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+        }
+    }
 }
