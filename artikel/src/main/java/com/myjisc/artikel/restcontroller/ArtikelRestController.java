@@ -164,5 +164,5 @@ public class ArtikelRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
     }
-
+    
 }
