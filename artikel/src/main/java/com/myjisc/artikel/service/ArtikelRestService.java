@@ -1,7 +1,6 @@
 package com.myjisc.artikel.service;
 
 import com.myjisc.artikel.dto.request.CreateArtikelRequestDTO;
-import com.myjisc.artikel.dto.request.CreateArtikelRequestDTO;
 import com.myjisc.artikel.model.Artikel;
 import com.myjisc.artikel.repository.ArtikelDb;
 import jakarta.transaction.Transactional;
