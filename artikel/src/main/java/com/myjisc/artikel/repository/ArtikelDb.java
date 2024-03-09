@@ -11,4 +11,5 @@ import java.util.List;
 @Transactional
 public interface ArtikelDb extends JpaRepository<Artikel, Long> {
         List<Artikel> findByIsDeletedFalse();
+        Artikel findByIdArtikelAndIsDeletedFalse(Long id);
 }

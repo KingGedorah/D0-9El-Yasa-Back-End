@@ -28,11 +28,11 @@ public class ArtikelRestService {
     }
 
     public List<Artikel> retreiveAvailableArtikel() {
-        return artikelDb.findAll();
+        return artikelDb.findByIsDeletedFalse();
     }
 
     public Artikel getArtikelByID(String idArtikel)  {
-        return artikelDb.findById(Long.valueOf(idArtikel)).get();
+        return artikelDb.findByIdArtikelAndIsDeletedFalse(Long.valueOf(idArtikel));
     }
 
     public Artikel createRestArtikel (Artikel artikel) {
@@ -41,17 +41,21 @@ public class ArtikelRestService {
     }
 
     public Artikel createRestArtikel (Artikel artikel, MultipartFile file) throws IOException {
-        artikel.setImageArtikel(imageUtil.compressImage(file.getBytes()));
-        artikelDb.save(artikel);
-        return  artikel;
+        if (checkFile(file)) {
+            artikel.setImageArtikel(imageUtil.compressImage(file.getBytes()));
+            artikelDb.save(artikel);
+            return  artikel;
+        } else {
+            throw new IOException("File is not an image");
+        }
+
     }
 
     public byte[] getImage (String idArtikel) throws NoSuchObjectException {
-        Artikel existingArtikel = artikelDb.findById(Long.valueOf(idArtikel)).get();
+        Artikel existingArtikel = artikelDb.findByIdArtikelAndIsDeletedFalse(Long.valueOf(idArtikel));
 
         if (existingArtikel != null) {
             byte[] image = imageUtil.decompressImage(existingArtikel.getImageArtikel());
-
             return image;
         } else {
             throw new NoSuchObjectException("Article not found");
@@ -62,5 +66,10 @@ public class ArtikelRestService {
     public void deleteArtikel(Artikel artikel) {
         artikel.setDeleted(true);
         artikelDb.save(artikel);
+    }
+
+    public boolean checkFile(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        return fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png");
     }
 }
