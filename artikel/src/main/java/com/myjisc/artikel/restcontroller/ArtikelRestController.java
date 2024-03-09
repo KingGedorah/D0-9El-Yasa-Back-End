@@ -63,7 +63,7 @@ public class ArtikelRestController {
 
             if (image == null) {
                 Map<String, Object> responseBody = new HashMap<>();
-                responseBody.put("message", "Data not found");
+                responseBody.put("message", "Image not found");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
             }
 
@@ -110,7 +110,7 @@ public class ArtikelRestController {
 
             } catch (IOException e) {
                 Map<String, Object> responseBody = new HashMap<>();
-                responseBody.put("message", "Can't process image");
+                responseBody.put("message", "Check your input again");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
             }
         }
@@ -120,6 +120,13 @@ public class ArtikelRestController {
     public ResponseEntity deleteArtikel(@PathVariable("id") String id) {
         try {
             var artikel = artikelRestService.getArtikelByID(id);
+
+            if (artikel == null) {
+                Map<String, Object> responseBody = new HashMap<>();
+                responseBody.put("message", "Artikel not found");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+            }
+
             artikelRestService.deleteArtikel(artikel);
 
             Map<String, Object> responseBody = new HashMap<>();
@@ -142,7 +149,7 @@ public class ArtikelRestController {
 
             if (artikel == null) {
                 Map<String, Object> responseBody = new HashMap<>();
-                responseBody.put("message", "Data not found");
+                responseBody.put("message", "Artikel not found");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
             }
 
