@@ -20,7 +20,7 @@ import java.util.function.Function;
 @Component
 public class JwtService {
 
-    @Value("${application.security.jwt.secret-key}")
+    // @Value("${application.security.jwt.secret-key}")
     private static final String SECRET_KEY = "fd24a01dfc7231bc5e96cef99c26692f9d9e568364ab61a1cff23985152f8ef0";
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
@@ -69,10 +69,21 @@ public class JwtService {
         return buildToken(extraClaims, userDetails, jwtExpiration);
       }
 
-    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long jwtExpiration2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buildToken'");
-    }
+      private String buildToken(
+        Map<String, Object> extraClaims,
+        UserDetails userDetails,
+        long expiration
+            ) {
+            return Jwts
+                    .builder()
+                    .setClaims(extraClaims)
+                    .setSubject(userDetails.getUsername())
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                    .signWith(getSignKey(), SignatureAlgorithm.HS256)
+                    .compact();
+            }
+
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);

@@ -39,10 +39,17 @@ import propensi.myjisc.user.model.Role;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue
     private Integer id;
+
+    private String firstname;
+
+    private String lastname;
+
     private String username;
+
     private String password;
+
     private String email;
 
     @Enumerated(EnumType.STRING)

@@ -13,6 +13,8 @@ import lombok.ToString;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collections;
@@ -20,16 +22,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Entity
-// @Data
-@ToString
-// @NoArgsConstructor
-// @AllArgsConstructor
-public enum Role {
-    ADMIN,
-    GUEST,
-    MURID,
-    GURU,
-    STAFF;
 
-}
+    public enum Role implements GrantedAuthority {
+        ADMIN,
+        GUEST,
+        MURID,
+        GURU,
+        STAFF;
+
+        @Override
+        public String getAuthority() {
+            return name();
+        }
+    }
