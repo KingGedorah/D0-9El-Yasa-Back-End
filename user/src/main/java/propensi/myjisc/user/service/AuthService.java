@@ -1,8 +1,10 @@
 package propensi.myjisc.user.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +16,26 @@ import propensi.myjisc.user.model.User;
 import propensi.myjisc.user.repository.UserRepository;
 
 @Service
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private  UserRepository userRepository;
+    @Autowired
+    private  JwtService jwtService;
+    @Autowired
+    private  AuthenticationManager authenticationManager;
     
     public AuthResponseDTO register(RegisterRequest request) {
         var user = User.builder()
+        .firstname(request.getFirstname())
+        .lastname(request.getLastname())
         .username(request.getUsername())
         .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
+        .password(encode(request.getPassword()))
         .role(request.getRole())
         .build();
-        var savedUser = userRepository.save(user);
+        userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         return AuthResponseDTO.builder()
             .token(jwtToken)
@@ -38,18 +44,25 @@ public class AuthService {
         
     }
 
+
+
     public AuthResponseDTO authenticate(AuthRequestDTO request) {
          authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
-                request.getUsername(),
+                request.getEmail(),
                 request.getPassword()
             )
         );
-        var user = userRepository.findByEmail(request.getUsername())
+        var user = userRepository.findByEmail(request.getEmail())
             .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
             return AuthResponseDTO.builder()
             .token(jwtToken)
             .build();
+    }
+
+    public String encode(String password){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
     }
 }
