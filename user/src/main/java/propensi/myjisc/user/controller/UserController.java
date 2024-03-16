@@ -18,4 +18,11 @@ public class UserController {
         response.put("message", "This is a template");
         return response;
     }
+
+    @GetMapping("/user/{id}")
+    public Map<String, String> helloWorldWithId() {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "This is a template with id");
+        return response;
+    }
 }
