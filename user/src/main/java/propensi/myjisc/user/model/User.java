@@ -38,6 +38,10 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.AUTO)
+    // private UUID id;
+
     private String firstname;
 
     private String lastname;
