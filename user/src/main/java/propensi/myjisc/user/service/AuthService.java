@@ -49,7 +49,6 @@ public class AuthService {
     }
 
 
-
     public AuthResponseDTO authenticate(AuthRequestDTO request) {
          authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
